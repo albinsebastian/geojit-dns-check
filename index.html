@@ -46,7 +46,7 @@
     }
 
   for (const domain of domains) {
-    fetch(`http://ip-api.com/json/${domain}`)
+    fetch(`https://ip-api.com/json/${domain}`)
       .then(res => res.json())
       .then(data => {
         addToList(domain, data);
