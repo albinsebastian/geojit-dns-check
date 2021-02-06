@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+  <style>
+    .status-fail{
+      color: #f73859;
+    }
+    .status-success{
+      color: #1fab89;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <table id="status">
+      <thead>
+      <tr>
+        <th>Domain</th>
+        <th>IP</th>
+        <th>Query Status</th>
+      </tr>
+    </thead>
+    <tbody id="status-body">
+    </tbody>
+  </table>
+</div>
+</body>
+<script>
+  const domains = ["selfie.geojit.net", "flair.gbnpp.in", "flip.gbnpp.in"];
+  const mainContainer = document.getElementById('status-body');
+  
+  function addToList(domain, data){
+    const tr = document.createElement("TR");
+    tr.innerHTML = `
+    <td>${domain}</td>
+    <td>${data.status === 'success' ? data.query : data.message}</td>
+    <td class="status-${data.status}">${data.status}</td>
+    `;
+    mainContainer.appendChild(tr);
+    }
+
+  for (const domain of domains) {
+    fetch(`http://ip-api.com/json/${domain}`)
+      .then(res => res.json())
+      .then(data => {
+        addToList(domain, data);
+      })
+  }
+</script>
+</html>
