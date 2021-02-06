@@ -23,7 +23,6 @@
       <tr>
         <th>Domain</th>
         <th>IP</th>
-        <th>Query Status</th>
       </tr>
     </thead>
     <tbody id="status-body">
@@ -32,21 +31,20 @@
 </div>
 </body>
 <script>
-  const domains = ["selfie.geojit.net", "flair.gbnpp.in", "flip.gbnpp.in"];
+  const domains = ["selfie.geojit.net", "flair.gbnpp.in", "flip.gbnpp.in", "geojit.com"];
   const mainContainer = document.getElementById('status-body');
   
   function addToList(domain, data){
     const tr = document.createElement("TR");
     tr.innerHTML = `
     <td>${domain}</td>
-    <td>${data.status === 'success' ? data.query : data.message}</td>
-    <td class="status-${data.status}">${data.status}</td>
+    <td>${data["Answer"] ? data['Answer'].map(a => a.data).join(', ') : ''}</td>
     `;
     mainContainer.appendChild(tr);
     }
 
-  for (const domain of domains) {
-    fetch(`https://ip-api.com/json/${domain}`)
+  for (const domain of domains){
+    fetch(`https://dns.google/resolve?name=${domain}&type=A`)
       .then(res => res.json())
       .then(data => {
         addToList(domain, data);
